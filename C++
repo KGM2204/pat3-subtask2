@@ -1,117 +1,81 @@
- #include <iostream>
- #include <string>
- #include <bitset>
- #include <cstdlib> // for rand() and srand()
- #include <ctime>   // for time()
+#include <iostream>
+#include <vector>
+#include <iomanip>
+using namespace std;
 
- using namespace std;
+struct Order {
+    int id;
+    string customer;
+    int quantity;
+    float price;
+};
 
-// Function 1: Decimal to Binary
-string decimalToBinary(int decimalNum) {
-    if (decimalNum == 0) return "0";
-    string binary = "";
-    while (decimalNum > 0) {
-     binary = to_string(decimalNum % 2) + binary;
-     decimalNum /= 2;  
+
+vector<Order> orders = {
+    {101, "Thabo", 3, 15.75},
+    {102, "Lerato", 5, 30.50},
+    {103, "Nomvula", 2, 10.00},
+    {104, "Sipho", 4, 22.00},
+    {105, "Bongani", 6, 40.25},
+    {106, "Lindiwe", 1, 5.50},
+    {107, "Jabulani", 3, 18.00},
+    {108, "Ayanda", 2, 12.17},
+    {109, "Kgosi", 6, 28.00},
+    {110, "Refilwe", 4, 24.50}
+};
+
+void addOrder() {
+    Order newOrder;
+    cout << "Enter Order ID: ";  "Enter Customer Name: "; "Enter Quantity: ";  "Enter Price per Unit: "; "Order added successfully.\n";
+    cin >> newOrder.id; newOrder.customer; newOrder.quantity; newOrder.price;
+ 
+    orders.push_back(newOrder);
+   
+
+void displayOrders() {
+    cout << left << setw(10) << "ID" << setw(15) << "Customer" << setw(10)
+         << "Quantity" << setw(10) << "Price" << endl;
+    for (const auto& order : orders) {
+        cout << left << setw(10) << order.id << setw(15) << order.customer << setw(10) << order.quantity << setw(10) << fixed << setprecision(2)  << order.price << endl;
     }
-    return binary;
 }
 
-// Function 2: Binary to Decimal
-int binaryToDecimal(string binaryStr) {
-    int decimalValue = 0;
-    for (char bit : binaryStr) {
-        decimalValue = decimalValue * 2 + (bit - '0');
-    }
-    return decimalValue;
-}
-
-// Function 3: Decimal to Hexadecimal
-string decimalToHex(int decimalNum) {
-    if (decimalNum == 0) return "0";
-    string hexChars = "0123456789ABCDEF";
-    string hexStr = "";
-    while (decimalNum > 0) {
-        hexStr = hexChars[decimalNum % 16] + hexStr;
-        decimalNum /= 16;
-    }
-    return hexStr;
-}
-
-// Function 4: Hexadecimal to Decimal
-int hexToDecimal(string hexStr) {
-    int decimalValue = 0;
-    for (char c : hexStr) {
-        c = toupper(c);
-        if (c >= '0' && c <= '9')
-            decimalValue = decimalValue * 16 + (c - '0');
-        else if (c >= 'A' && c <= 'F')
-            decimalValue = decimalValue * 16 + (c - 'A' + 10);
-    }
-    return decimalValue;
-}
-
-// Demo: Random number between 0 and 99 -> Binary
-void demoRandomConversion() {
-    int number = rand() % 100; // 0–99
-    cout << "\nGenerated random integer: " << number << endl;
-    cout << "Binary representation: " << decimalToBinary(number) << "\n" << endl;
-}
-
-// Menu system
-void mainMenu() {
-    int choice;
-    srand(time(0)); // Seed random generator
-
-    while (true) {
-        cout << "Conversion Menu:\n";
-        cout << "1. Convert Decimal to Binary\n";
-        cout << "2. Convert Binary to Decimal\n";
-        cout << "3. Convert Hexadecimal to Decimal\n";
-        cout << "4. Convert Decimal to Hexadecimal\n";
-        cout << "5. Demo (Generate and convert random integer to binary)\n";
-        cout << "6. Exit\n";
-        cout << "Enter your choice (1-6): ";
-        cin >> choice;
-
-        if (choice == 1) {
-            int dec;
-            cout << "Enter a decimal number: ";
-            cin >> dec;
-            cout << "Binary representation: " << decimalToBinary(dec) << "\n\n";
-        } 
-        else if (choice == 2) {
-            string binary;
-            cout << "Enter a binary number: ";
-            cin >> binary;
-            cout << "Decimal representation: " << binaryToDecimal(binary) << "\n\n";
-        } 
-        else if (choice == 3) {
-            string hex;
-            cout << "Enter a hexadecimal number: ";
-            cin >> hex;
-            cout << "Decimal representation: " << hexToDecimal(hex) << "\n\n";
-        } 
-        else if (choice == 4) {
-            int dec;
-            cout << "Enter a decimal number: ";
-            cin >> dec;
-            cout << "Hexadecimal representation: " << decimalToHex(dec) << "\n\n";
-        } 
-        else if (choice == 5) {
-            demoRandomConversion();
-        } 
-        else if (choice == 6) {
-            cout << "Exiting the program." << endl;
+void findOrderById() {
+    int id;
+    cout << "Enter Order ID to search: ";
+    cin >> id;
+    bool found = false;
+    for (const auto& order : orders) {
+        if (order.id == id) {
+            cout << "\nOrder Found:\n"; "Customer: " << order.customer << "\n"; "Quantity: " << order.quantity << "\n"; "Price per unit: " << fixed << setprecision(2) << order.price << "\n"; "Total: " << order.quantity * order.price << "\n";
+            found = true;
             break;
-        } 
-        else {
-            cout << "Invalid choice. Please enter 1–6.\n\n";
         }
     }
+    if (!found) {
+        cout << "Order not found.\n";
+    }
+}
+
+void calculateRevenue() {
+    float total = 0;
+    for (const auto& order : orders) {
+        total += order.quantity * order.price;
+    }
+    cout << "Total Revenue: " << fixed << setprecision(2) << total << "\n";
 }
 
 int main() {
-    mainMenu();
+    int choice;
+    do {
+        cout << "\n=== Order Management Menu ===\n";  "1. Add New Order\n"; "2. Display All Orders\n";  "3. Find Order by ID\n";  "4. Calculate Total Revenue\n"; "5. Exit\n";  "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1: addOrder(); break; case 2: displayOrders(); break; case 3: findOrderById(); break;   case 4: calculateRevenue(); break;  case 5: cout << "Exiting program.\n"; break;
+            default: cout << "Invalid choice. Try again.\n";
+        }
+    } while (choice != 5);
+
     return 0;
 }
