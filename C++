@@ -11,8 +11,8 @@ string decimalToBinary(int decimalNum) {
     if (decimalNum == 0) return "0";
     string binary = "";
     while (decimalNum > 0) {
-        binary = to_string(decimalNum % 2) + binary;
-        decimalNum /= 2;  
+     binary = to_string(decimalNum % 2) + binary;
+     decimalNum /= 2;  
     }
     return binary;
 }
