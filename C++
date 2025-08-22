@@ -7,7 +7,7 @@ struct Order {
     int id;
     string customer;
     int quantity;
-    float price;
+ float price;
 };
 
 
